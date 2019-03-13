@@ -40,7 +40,7 @@ Anything outside the structure mentioned in (1) is sent to client as response. T
 msg = 'hello'
 .py>
 
-<h1>Python says .py(msg) to you!</h1>
+Python says .py(msg) to you!
 
 If the variable name does not exists, for exemple, .py(invalid), the programs binds the directive as it is, that it .py(invalid).
 
