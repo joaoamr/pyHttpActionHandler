@@ -10,6 +10,7 @@ The pyhtml file structure is partitioned in two sections:
 Here is where we place Python codes to run in its server. The commands must be inside the structure:
 
 <.py
+
 #Python commands
 
 .py>
@@ -19,6 +20,7 @@ It is also able to handle GET and POST request. These params are stored in two d
 requests. For exemple:
 
 <.py
+
 #Bind POST param name
 
 name = POST['name']
@@ -26,6 +28,7 @@ name = POST['name']
 .py>
 
 <.py
+
 #Bind GET param name
 
 name = GET['name']
