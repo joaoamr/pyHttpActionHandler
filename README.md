@@ -13,7 +13,7 @@ Here is where we place Python codes to run in its server. The commands must be i
 
 #Python commands
 
-.py>
+.>
 
 This structure is sensitive to line breakers, as well as Python codes. 
 It is also able to handle GET and POST request. These params are stored in two dictionaries: POST for POST requests and GET for GET 
@@ -25,7 +25,7 @@ requests. For exemple:
 
 name = POST['name']
 
-.py>
+.>
 
 <.py
 
@@ -33,7 +33,7 @@ name = POST['name']
 
 name = GET['name']
 
-.py>
+.>
 
 2. Hypertext response:
 
@@ -44,7 +44,7 @@ Anything outside the structure mentioned in (1) is sent to client as response. T
 
 msg = 'hello'
 
-.py>
+.>
 
 Python says .py(msg) to you!
 
