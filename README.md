@@ -38,7 +38,9 @@ Anything outside the structure mentioned in (1) is sent to client as response. T
 .py(varname). For instance:
 
 <.py
+
 msg = 'hello'
+
 .py>
 
 Python says .py(msg) to you!
