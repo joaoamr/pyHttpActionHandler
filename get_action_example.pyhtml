@@ -1,0 +1,22 @@
+<.py
+name = GET['name']
+age = GET['age']
+
+if int(age) > 17:
+       msg = 'You are not underage'
+else:
+       msg = 'You are underage'
+.>
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+Welcome .py(name)<br>
+.py(msg)
+
+</body>
+</html>
