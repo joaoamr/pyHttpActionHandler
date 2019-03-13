@@ -11,6 +11,7 @@ Here is where we place Python codes to run in its server. The commands must be i
 
 <.py
 #Python commands
+
 .py>
 
 This structure is sensitive to line breakers, as well as Python codes. 
