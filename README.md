@@ -2,7 +2,7 @@
 A HttpHandler class to process hypertext in Python language.
 
 The handler enables to embed Python codes in html pages, just like PHP, ASP, C#, etc. 
-To use this feature the file must be in a *.pyhtml file.
+To use this feature the file must be a .pyhtml file.
 The pyhtml file structure is partitioned in two sections:
 
 1. Server action: 
