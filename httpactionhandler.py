@@ -3,13 +3,20 @@ from urllib.parse import unquote_plus
 from urldecode import decode
 
 class HttpActionServer(BaseHTTPRequestHandler):
-    GET = {}
-    POST = {}
-    url = ''
+    GET = {} #Global disctionary for get params
+    POST = {} #Global disctionary for post params
+    url = '' #Requested url
       
     def _loadrequest(self, action):
+        """
+        Run the requested action.
+        If the target is a pyhtml file, it runs the code and returns the response.
+        Otherwise, it returns the requested file.
+        """
+        
         POST = self.POST
         GET = self.GET
+        PATH = self.path
         if action.endswith('.pyhtml') == False:
             file = open(action, 'rb')
             response = file.read()
@@ -20,7 +27,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
         response = file.read()
         file.close()
         serverCmd = ''
-        #catch and run server commands 
+        #Catch and run server commands 
         st_i = response.find('<.py\n')
         while st_i > -1:
             fn_i = response.find('\n.>')
@@ -30,7 +37,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
             
         exec(serverCmd)
 
-        #bind variables to response
+        #Bind variables to response
         st_i = response.find('.py(')
         while st_i > -1:
             fn_i = response.find(')', st_i)
@@ -43,13 +50,17 @@ class HttpActionServer(BaseHTTPRequestHandler):
             response = response[:st_i] + str(var) + response[fn_i + 1:]
             st_i = response.find('.py(', st_i + 1)
         return response.encode('utf-8')
-    
+
+    #set http headers to response 
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
     def _processUrl(self):
+        """
+        Process the requested URL and add the params to the GET dictionary
+        """
         req = self.path.split('?')
         self.GET.clear()
         if len(req) > 1:
@@ -62,6 +73,10 @@ class HttpActionServer(BaseHTTPRequestHandler):
         self.url = req[0]
 
     def _processPostBody(self, post):
+        """
+        Process the post body and add the params to the POST dictionary
+        """
+        self.POST.clear()
         post = decode(post)
         params = post.split('&')
         for i in range (0, len(params)):
@@ -70,7 +85,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
             except:
                 pass
 
-    
+    #Process GET requests
     def do_GET(self):
         print(self.path)
         self._processUrl()
@@ -87,7 +102,8 @@ class HttpActionServer(BaseHTTPRequestHandler):
             self._set_headers()
 
         self.wfile.write(res)
-        
+
+    #Process POST requests    
     def do_POST(self):
         self._processUrl()     
         content_len = int(self.headers.get('content-length', 0))
