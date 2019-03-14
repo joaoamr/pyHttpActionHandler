@@ -1,0 +1,4 @@
+<.py
+echo ('Hello from the other side!<br>')
+echo ('This a message sent by echo function.')
+.>
