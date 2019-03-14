@@ -9,7 +9,7 @@ servermsg = 'hello'
 <body>
 
 <h1>Python says .py(servermsg) to you!</h1><br>
-<a>Maybe you'd be interested to see <a href="examples/get_example.pyhtml">GET</a> and <a href="examples/post_example.pyhtml">POST</a>  requests examples.<a>
+<a>Maybe you'd be interested to see <a href="examples/get_example.pyhtml">GET</a> and <a href="examples/post_example.pyhtml">POST</a>  requests and <a href="examples/echo.pyhtml">echo</a> function examples.<a>
 
 </body>
 </html>
