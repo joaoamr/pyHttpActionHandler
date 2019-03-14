@@ -6,6 +6,10 @@ class HttpActionServer(BaseHTTPRequestHandler):
     GET = {} #Global disctionary for get params
     POST = {} #Global disctionary for post params
     url = '' #Requested url
+    data_echo = '' #Data send from server
+
+    def echo(self, data):
+        self.data_echo += data
       
     def _loadrequest(self, action):
         """
@@ -13,7 +17,8 @@ class HttpActionServer(BaseHTTPRequestHandler):
         If the target is a pyhtml file, it runs the code and returns the response.
         Otherwise, it returns the requested file.
         """
-        
+        echo = self.echo
+        self.data_echo = ''
         POST = self.POST
         GET = self.GET
         PATH = self.path
@@ -49,6 +54,8 @@ class HttpActionServer(BaseHTTPRequestHandler):
 
             response = response[:st_i] + str(var) + response[fn_i + 1:]
             st_i = response.find('.py(', st_i + 1)
+
+        response = self.data_echo + response
         return response.encode('utf-8')
 
     #set http headers to response 
