@@ -16,7 +16,7 @@ Here is where we place Python codes to run in its server. The commands must be i
 .>
 
 This structure is sensitive to line breakers, as well as Python codes. 
-It is also able to handle GET and POST request. These params are stored in two dictionaries: POST for POST requests and GET for GET 
+It is also able to handle GET and POST requests. These params are stored in two dictionaries: POST for POST requests and GET for GET 
 requests. For exemple:
 
 <.py
