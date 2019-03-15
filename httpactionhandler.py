@@ -3,8 +3,8 @@ from urllib.parse import unquote_plus
 from urldecode import decode
 
 class HttpActionServer(BaseHTTPRequestHandler):
-    GET = {} #Global disctionary for get params
-    POST = {} #Global disctionary for post params
+    GET = {} #Global dictionary for get params
+    POST = {} #Global dictionary for post params
     url = '' #Requested url
     data_echo = '' #Data send from server
 
@@ -59,7 +59,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
         return response.encode('utf-8')
 
     #set http headers to response 
-    def _set_headers(self):
+    def _writeheaders(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
@@ -106,7 +106,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
             res = self._loadrequest('sys\\404_notfound.pyhtml')
                         
         if self.url.endswith('.pyhtml') or self.url.endswith('.html'):
-            self._set_headers()
+            self._writeheaders()
 
         self.wfile.write(res)
 
@@ -127,7 +127,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
             res = self._loadrequest('sys\\404_notfound.pyhtml')
             
         if self.url.endswith('.pyhtml') or self.url.endswith('.html'):
-            self._set_headers()
+            self._writeheaders()
             
         self.wfile.write(res)
 
