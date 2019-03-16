@@ -1,6 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote_plus
-from urldecode import decode
 
 class HttpActionServer(BaseHTTPRequestHandler):
     GET = {} #Global dictionary for get params
@@ -74,7 +73,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
             params = req[1].split('&')
             for i in range (0, len(params)):
                 try:
-                    self.GET[params[i].split('=')[0]] = decode(params[i].split('=')[1])
+                    self.GET[params[i].split('=')[0]] = unquote_plus(params[i].split('=')[1])
                 except:
                     pass
         self.url = req[0]
@@ -84,7 +83,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
         Process the post body and add the params to the POST dictionary
         """
         self.POST.clear()
-        post = decode(post)
+        post = unquote_plus(post)
         params = post.split('&')
         for i in range (0, len(params)):
             try:
