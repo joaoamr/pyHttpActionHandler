@@ -42,8 +42,7 @@ name = GET['name']
 
 ## Hypertext response:
 
-Anything outside the structure mentioned in (1) is sent to client as response. To bind a variable to its section is necessary to use
-.py(varname). For instance:
+Anything outside the structure mentioned that embeds Python codes is sent to client as response. To bind a variable to its section it is necessary to use .py(varname). For instance:
 
 ```
 <.py
