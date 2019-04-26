@@ -1,7 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote_plus
-import sys
-import traceback
+from traceback import format_exc
 
 class HttpActionServer(BaseHTTPRequestHandler):
     GET = {} #Global dictionary for get params
@@ -14,15 +13,16 @@ class HttpActionServer(BaseHTTPRequestHandler):
 
     def _exceptionreport(self, action):
         """
-        Reports the exception in the application terminal and client response
+        Reports the exception at application terminal and client response
         """
         res = '<h1>An exception occurred while processing ' + action + ' request.</h1><br>' 
         print('An excepetion occurred while processing ' + action + ' request.\n')
-        tb = traceback.format_exc()
-        print(tb)
+        tb = format_exc()
         tb = tb.split('\n')
-        for line in tb:
-            res = res + line + '<br>'
+        print(tb[0])
+        res = res + tb[0] + '<br>'
+        for i in range(5, len(tb)):
+            res = res + tb[i] + '<br>'
             
         return res.encode('utf-8')
           
@@ -99,6 +99,9 @@ class HttpActionServer(BaseHTTPRequestHandler):
                     self.GET[params[i].split('=')[0]] = unquote_plus(params[i].split('=')[1])
                 except:
                     pass
+        if req[0].endswith('/'):
+            req[0] = req[0] + 'index.pyhtml'
+            
         self.url = req[0]
 
     def _processPostBody(self, post):
@@ -118,22 +121,7 @@ class HttpActionServer(BaseHTTPRequestHandler):
     def do_GET(self):
         print(self.path)
         self._processUrl()
-        res = b''
-        try:
-            if self.url == '/':
-                res = self._loadrequest('web\\index.pyhtml')
-            else:
-                res = self._loadrequest('web\\' + self.url[1:])
-        except:
-            res = self._exceptionreport(self.url)
-            
-        if res == False:
-            res = self._loadrequest('sys\\404_notfound.pyhtml')
-                        
-        if self.url.endswith('.pyhtml') or self.url.endswith('.html'):
-            self._writeheaders()
-
-        self.wfile.write(res)
+        self._writeresponse()
 
     #Process POST requests    
     def do_POST(self):
@@ -141,24 +129,31 @@ class HttpActionServer(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post = self.rfile.read(content_len)
         self._processPostBody(post.decode('utf-8'))
-        
+        self._writeresponse()
+
+    #Write the response to client
+    def _writeresponse(self):
         res = b''
         try:
-            if self.url == '/':
-                res = self._loadrequest('web\\index.pyhtml')
-            else:
-                res = self._loadrequest('web\\' + self.url[1:])
+            res = self._loadrequest('web\\' + self.url[1:])
         except:
             res = self._exceptionreport(self.url)
             
         if res == False:
-            res = self._loadrequest('sys\\404_notfound.pyhtml')
+            try:
+                self.url = self.url + '/index.pyhtml'
+                res = self._loadrequest('web\\' + self.url[1:])
+            except:
+                res = self._exceptionreport(self.url)
+        
+            if res == False:
+                res = self._loadrequest('sys\\404_notfound.pyhtml')
+                self.url = '404_notfound.pyhtml'
                         
         if self.url.endswith('.pyhtml') or self.url.endswith('.html'):
             self._writeheaders()
 
         self.wfile.write(res)
-
 
     def do_PUT(self):
         self.do_POST()
