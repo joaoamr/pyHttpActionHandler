@@ -1,11 +1,13 @@
 <.py
+
 name = GET['name']
 age = GET['age']
+msg = ''
 
 if int(age) > 17:
        msg = 'You are not underage'
 else:
-       msg = 'You are underage'
+       msg = 'You are underage'  
 .>
 
 <html>

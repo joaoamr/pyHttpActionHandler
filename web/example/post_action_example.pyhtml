@@ -1,12 +1,15 @@
 <.py
 name = POST['name']
 age = POST['age']
+msg = ''
 
 if int(age) > 17:
        msg = 'You are not underage'
 else:
-       msg = 'You are underage'
+	   msg = 'You are underage'
 .>
+
+
 
 <html>
 

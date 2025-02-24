@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote_plus
+import traceback
 from traceback import format_exc
 
 class HttpActionServer(BaseHTTPRequestHandler):
@@ -61,8 +62,11 @@ class HttpActionServer(BaseHTTPRequestHandler):
             serverCmd += response[st_i + 5:fn_i] + '\n'
             response = response[:st_i] + response[fn_i + 3:]
             st_i = response.find('<.py\n')
-            
-        exec(serverCmd)
+        
+        #serverCmd += '\nlocals.update(locals())' 
+        
+        vars=locals().copy()
+        exec(serverCmd, locals=vars)
 
         #Bind variables to response
         st_i = response.find('.py(')
@@ -70,11 +74,14 @@ class HttpActionServer(BaseHTTPRequestHandler):
             fn_i = response.find(')', st_i)
             var = response[st_i + 4:fn_i]
             try:
-                var = locals()[var]
-            except:
-                var = '.py(' + var + ')'
+                value = vars[var]
+            except Exception as e:
+                traceback.print_exc()
+                print('vars:')
+                print(vars)
+                value = '.py(' + var + ')'
 
-            response = response[:st_i] + str(var) + response[fn_i + 1:]
+            response = response[:st_i] + str(value) + response[fn_i + 1:]
             st_i = response.find('.py(', st_i + 1)
 
         response = self.data_echo + response
